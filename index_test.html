@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<style>
+    .box {
+        width: 100px;
+        height: 100px;
+        position: relative;
+        background-color: green;
+        /* display: none; */
+
+    }
+</style>
+<script>
+    $(function() {
+        /* $('#show').on('click', function(){
+            $('.box').stop().show(1500)
+
+        })
+
+        $('#hide').on('click', function(){
+            $('.box').stop().hide(1500)
+        })
+
+        $('#toggle').on('click', function(){
+            $('.box').stop().toggle(500)
+        }) */
+
+        /* $('#show').on('click', function(){
+            $('.box').stop().slideDown(1500)
+
+        })
+
+        $('#hide').on('click', function(){
+            $('.box').stop().slideUp(1500)
+        })
+
+        $('#toggle').on('click', function(){
+            $('.box').stop().slideToggle(500)
+        }) */
+
+
+       /*  $('#show').on('click', function(){
+            $('.box').stop().fadeIn(1500)
+
+        })
+
+        $('#hide').on('click', function(){
+            $('.box').stop().fadeOut(1500)
+        })
+
+        $('#toggle').on('click', function(){
+            $('.box').stop().fadeToggle(500)
+        }) */
+
+        /* $('#show').on('click', function(){
+            console.log('hi')
+            $('.box:last').animate({'left': '300px','top': '500px'}, 500, function(){
+                $('.box:first').animate({
+                    'left': '600px',
+                    'top': '400px'
+                }, 1000 )
+            })
+            .animate({'left': '50px','top': '100px'}, 2000)
+            .delay(1000)
+            .animate({'left': '10px','top': '10px'})
+
+        }) */
+
+        $('#get').click( function(){
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "testfile.html", false);
+            //xhr.send(); // синхронно
+            xhr.onreadystatechange = function () { // асинхронно
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        document.getElementById("output").innerHTML+= xhr.responseText;
+                    }
+                }
+            };
+            xhr.send();
+
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:4000/user',
+
+
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (err) {
+                    alert(err.statusText)
+                }
+
+
+
+            })
+
+        })
+
+        $('#post').click(function() {
+            const body = {name: 'Igor', age: 150,  role: 'maneger'};
+
+            $.ajax({
+                type: 'PUT',
+                data: body,
+                url: 'http://localhost:4000/user/5',
+
+
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (err) {
+                    alert(err.statusText)
+                }
+
+
+
+            })
+
+        })
+
+
+
+
+
+    })
+</script>
+<style>
+    span#preloader {
+        display: none;
+
+    }
+</style>
+<body>
+        <!-- <button id="hide">hide</button>
+        <button id="show">show</button>
+        <button id="toggle">toggle</button>
+        <div class="box"></div>
+        <div class="box"></div> -->
+    <h1>Get startet</h1>
+    <button id="get">get</button>
+    <button id="post">post</button>
+    <p><span id="preloader">Loaading.....</span></p>
+    <div id="output"></div>
+    <div id="main"></div>
+
+
+</body>
+</html>
