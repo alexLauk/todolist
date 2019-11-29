@@ -31,6 +31,7 @@
                         if(+$(this).find('.checkbox').val()){ // проверяем состояние флага checked
                             $(this).find('.checkbox').attr('checked', 'checked')
                             $(this).addClass('bg');
+                            $(this).find('span').addClass('completed');
                         }
                     })
         }
@@ -77,7 +78,7 @@
         });
 
         // отслeживаем изменения чекбокса
-        $(document).on('click', 'input', function(e){
+        $(document).on('click', '.checkbox', function(e){
 
             console.log($(this))
             let checked;
@@ -85,14 +86,18 @@
 
             if($(this).attr('checked')){
                 checked = 0;
-                $(this).parents('span').removeClass('completed'); //  удалить стиль text-decoration: line-through.
+                $(this).siblings('span').removeClass('completed'); //  удалить стиль text-decoration: line-through.
                 $(this).parents('.collection-item').removeClass('bg');
                 $(this).removeAttr('checked');
+                $(this).val(checked);
+
             } else {
                 checked = 1;
-                $(this).parents('span').addClass('completed'); //  добавить text-decoration: line-through.
+                $(this).siblings('span').addClass('completed'); //  добавить text-decoration: line-through.
                 $(this).parents('.collection-item').addClass('bg');
                 $(this).attr('checked', 'checked');
+                $(this).val(checked);
+
             }
 
             let body = {checked};
@@ -140,20 +145,17 @@
         // отслeживаем кнопку редактирования  записи
         $(document).on('click', '.edit', function(e){
 
-             //let id = $(this).parents('.collection-item')
-            let id = $(this).parents('.collection-item').attr("data-id");
+            id = $(this).parents('.collection-item').attr("data-id");
             let el = $(this).siblings('span');
             let msg = el.text();
 
-            console.log(id)
-            console.log(el)
+
             // open modal
             $('.cover, .modal, .content').fadeIn();
             let wrap = $('#wrapper'),
                 modal = $('.cover, .modal, .content'),
                 close = $('.cancel'),
                 edit = $('.editModal'),
-                //textArea = $('#modal').val(msg);
                 state = {
                     "close": 0
                 };
@@ -161,13 +163,10 @@
 
                 $('#modal').val(msg).focus(); // вставить текст
 
-
-                console.log(modal);
-
             // close modal
             $('.modal').click(function() {
                 wrap.on('click', function(event) {
-                    var select = $('.content');
+                    let select = $('.content');
                     if (!$(event.target).closest(select).length && !state.close)
                     modal.fadeOut();
                     state.close = 0;
@@ -184,7 +183,7 @@
                 let msg = $('#modal').val();
                 let body = {msg};
 
-                $.ajax({  //обновляем флаг checked в базе
+                $.ajax({  //редактируем запись в базе
                         type: 'PATCH',
                         data: body,
                         url: `http://localhost:4000/toDoList/${id}`,
@@ -193,11 +192,14 @@
                             el.text(msg);
                             modal.fadeOut();
                             state.close = 1;
+
+
                         },
                         error: function (err) {
                             console.log(err.statusText)
                         }
                 })
+                $(this).unbind('click');
             })
             return false;
         });
