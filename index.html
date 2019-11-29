@@ -24,8 +24,9 @@
 
         function renderList(list) {
             list.forEach(list => {  // полученный массив из базы выводим на клиент
-                        $('#list-items').append(`<li class="collection-item" data-id="${list.id}"><label><input class="checkbox" value="${list.checked}" type='checkbox'/><span>${list.msg}</span><i class="small material-icons remove">delete_forever</i><i class="small material-icons edit">edit</i></label></li>`)
+                        $('#list-items').append(`<li class="collection-item" data-id="${list.id}"><label><input value="${list.checked}" class="checkbox" type='checkbox'/><span>${list.msg}</span><i class="small material-icons remove">delete_forever</i><i class="small material-icons edit">edit</i></label></li>`)
                     })
+
 
                     $('.collection-item').each( function() {
                         if(+$(this).find('.checkbox').val()){ // проверяем состояние флага checked
@@ -80,7 +81,6 @@
         // отслeживаем изменения чекбокса
         $(document).on('click', '.checkbox', function(e){
 
-            console.log($(this))
             let checked;
             let id = $(this).parents('.collection-item').attr("data-id");
 
@@ -88,15 +88,15 @@
                 checked = 0;
                 $(this).siblings('span').removeClass('completed'); //  удалить стиль text-decoration: line-through.
                 $(this).parents('.collection-item').removeClass('bg');
-                $(this).removeAttr('checked');
                 $(this).val(checked);
+                $(this).removeAttr('checked');
 
             } else {
                 checked = 1;
                 $(this).siblings('span').addClass('completed'); //  добавить text-decoration: line-through.
                 $(this).parents('.collection-item').addClass('bg');
-                $(this).attr('checked', 'checked');
                 $(this).val(checked);
+                $(this).attr('checked', 'checked');
 
             }
 
@@ -117,7 +117,7 @@
 
             //e.preventDefault(); // предотвращает действие по умолчанию
             //e.stopPropagation() // останавливаeт «всплытие» событий
-            return false;  // быстрый способ вызова этих двух методов за раз
+            //return false;  // быстрый способ вызова этих двух методов за раз
         });
 
         // отслeживаем кнопку удаления записи
@@ -192,8 +192,6 @@
                             el.text(msg);
                             modal.fadeOut();
                             state.close = 1;
-
-
                         },
                         error: function (err) {
                             console.log(err.statusText)
